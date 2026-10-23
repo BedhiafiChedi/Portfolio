@@ -2,8 +2,8 @@
 # box's middle (darker) guide line instead of the box's bottom edge.
 import re, sys, zipfile, shutil
 src = sys.argv[1]; tmp = src + '.tmp'
-INLINE_CY = 'cy="400050"'   # height of the small/medium ruled boxes (42 px = 31.5 pt)
-RAISE = 15                  # half-points; tuned against the rendered PDF
+INLINE_CY = 'cy="609600"'   # height of the ruled boxes (64 px = 48 pt)
+RAISE = 24                  # half-points; tuned against the rendered PDF (main line = box middle)
 with zipfile.ZipFile(src) as zin, zipfile.ZipFile(tmp, 'w', zipfile.ZIP_DEFLATED) as zout:
     for item in zin.infolist():
         data = zin.read(item.filename)

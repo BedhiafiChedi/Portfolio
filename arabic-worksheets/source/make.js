@@ -11,7 +11,7 @@ const R = (text, o = {}) => new TextRun({ text, font: FONT, rightToLeft: true, s
   bold: o.bold, color: o.color, underline: o.underline ? {} : undefined });
 const BL = (n = 16) => R('.'.repeat(n), { color: GREY, size: 32 });
 // copybook-ruled answer boxes (see ruling.py): small, medium, full-width
-const RBS = { s: { width: 76, height: 42 }, m: { width: 128, height: 42 }, l: { width: 624, height: 49 } };
+const RBS = { s: { width: 64, height: 64 }, m: { width: 159, height: 64 }, l: { width: 635, height: 64 } };
 const RB = (k) => new ImageRun({ type: 'png', data: fs.readFileSync(`img/rule_${k}.png`), transformation: RBS[k] });
 const P = (children, o = {}) => new Paragraph({ children, bidirectional: true, alignment: o.align, indent: o.indent ? { start: o.indent } : undefined,
   spacing: { before: o.before ?? 60, after: o.after ?? 60, line: o.line ?? 360, lineRule: LineRuleType.AUTO }, keepNext: o.keepNext });
@@ -67,8 +67,8 @@ const page1 = [
     heading('1', 'أُكْمِلُ بِالْمَقْطَعِ النَّاقِصِ وَأَقْرَأُ الْجُمْلَةَ قِرَاءَةً مُسْتَرْسِلَةً:'),
     syllableBank(['ـمَـ', 'مِيـ', 'مَا', 'ـمِ', 'ـمُـ']),
     P([R('وَقَفَتِ الْـ', { size: 44 }), RB('s'), R('ـعَلِّمَةُ أَ', { size: 44 }), RB('s'), R('مَ الْقِسْـ', { size: 44 }), RB('s'),
-      R(' وَسَلَّـ', { size: 44 }), RB('s'), R('ـتْ', { size: 44 })], { before: 160, after: 40, line: 300 }),
-    P([R('عَلَى التَّلَا', { size: 44 }), RB('s'), R('ـذِ.', { size: 44 })], { before: 40, after: 20, line: 300 }),
+      R(' وَسَلَّـ', { size: 44 }), RB('s'), R('ـتْ', { size: 44 })], { before: 160, after: 40, line: 250 }),
+    P([R('عَلَى التَّلَا', { size: 44 }), RB('s'), R('ـذِ.', { size: 44 })], { before: 60, after: 20, line: 250 }),
   ]),
 ];
 const dot = () => P([R('●', { color: NAVY, size: 24 })], { align: C, before: 0, after: 0 });
@@ -92,14 +92,14 @@ page1.push(...exercise([
 ]));
 
 // ======================= PAGE 2 : حرف الراء =======================
-const word = (parts, w) => cell([P(parts, { align: C, before: 20, after: 20, line: 320 })], w, { borders: BOX('595959', 10), fill: 'F2F2F2' });
+const word = (parts, w) => cell([P(parts, { align: C, before: 0, after: 0, line: 250 })], w, { borders: BOX('595959', 10), fill: 'F2F2F2' });
 const S38 = (t) => R(t, { size: 42 });
 const page2 = [
   title('حَرْفُ الرَّاءِ: مَرْحَلَةُ التَّرْكِيبِ'), spacer(14),
   ...exercise([
     heading('1', 'أَقْرَأُ الْمَقَاطِعَ وَأُكْمِلُ الْكَلِمَاتِ بِمَا يُنَاسِبُ:'),
     syllableBank(['ـرَا', 'رِيـ', 'ـرُو', 'رَ']),
-    spacer(9),
+    spacer(5),
     table([new TableRow({ children: [
       word([RB('s'), S38('ـمُ')], 2250), cell([P([])], 300),
       word([S38('حُـ'), RB('s'), S38('فًا')], 2250), cell([P([])], 300),
@@ -109,21 +109,21 @@ const page2 = [
   ]),
   ...exercise([
     heading('2', 'أُكْمِلُ النَّصَّ بِالْكَلِمَاتِ الْمُتَحَصَّلِ عَلَيْهَا وَأَقْرَؤُهُ قِرَاءَةً مُسْتَرْسِلَةً:'),
-    P([S38('رَسَمَتْ '), RB('m'), S38(' '), RB('m'), S38(' عَلَى '), RB('m')], { before: 0, after: 0, line: 320 }),
-    P([S38('وَكَتَبَ مَالِكٌ '), RB('m'), S38(' عَلَى كُرَّاسِهِ.')], { before: 20, line: 320, after: 0 }),
+    P([S38('رَسَمَتْ '), RB('m'), S38(' '), RB('m'), S38(' عَلَى '), RB('m')], { before: 0, after: 0, line: 250 }),
+    P([S38('وَكَتَبَ مَالِكٌ '), RB('m'), S38(' عَلَى كُرَّاسِهِ.')], { before: 40, line: 250, after: 0 }),
   ]),
 ];
 const card = (pic, dims, parts, w) => cell([
   P(pic ? [img(pic, dims[0], dims[1])] : [], { align: C, before: 30, after: 0, line: 240 }),
-  P(parts, { align: C, before: 40, after: 40, line: 340 }),
+  P(parts, { align: C, before: 40, after: 40, line: 250 }),
 ], w, { borders: BOX('595959', 10), valign: VerticalAlign.BOTTOM });
 page2.push(...exercise([
   heading('3', 'أَسْتَمِعُ وَأُكْمِلُ الْكَلِمَاتِ بِالْمَقْطَعِ الْمُنَاسِبِ لِحَرْفِ الرَّاءِ:'),
   table([new TableRow({ cantSplit: true, children: [
-    card('ruler', [105, 70], [S38('مِسْطَـ'), RB('s'), S38('ةٌ')], 2250), cell([P([])], 300),
+    card('ruler', [90, 60], [S38('مِسْطَـ'), RB('s'), S38('ةٌ')], 2250), cell([P([])], 300),
     card(null, null, [S38('اِشْتَـ'), RB('s')], 2250), cell([P([])], 300),
-    card('boy', [54, 70], [S38('كَـ'), RB('s'), S38('ـمُ')], 2250), cell([P([])], 300),
-    card('sharpener', [105, 70], [S38('مِبْـ'), RB('s'), S38('ةٌ')], 2250),
+    card('boy', [46, 60], [S38('كَـ'), RB('s'), S38('ـمُ')], 2250), cell([P([])], 300),
+    card('sharpener', [90, 60], [S38('مِبْـ'), RB('s'), S38('ةٌ')], 2250),
   ] })], [2250, 300, 2250, 300, 2250, 300, 2250]),
 ]));
 page2.push(...exercise([

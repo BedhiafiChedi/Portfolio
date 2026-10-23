@@ -1,20 +1,26 @@
-# Copybook-style ruled writing boxes (pale background, guide lines, vertical cells).
+# Copybook (Seyes-style) ruled writing boxes: a thick main line in the middle with
+# 3 thin lines above and 3 below (8 equal gaps), and vertical cell lines every 4 gaps.
 import sys
 from PIL import Image, ImageDraw
 
-PX = 12  # pixels per mm
-BG, THIN, BASE, EDGE, VERT = '#EAF2FF', '#86A9DA', '#2F5FA8', '#3F64A0', '#A9C1E6'
+PX = 12          # pixels per mm
+GAP = 2.1        # mm between two horizontal lines
+BG, THIN, MAIN, EDGE, VERT = '#F1F6FF', '#9DBBE3', '#1F4E9A', '#3F64A0', '#8FAEDB'
 
-def ruled(w_mm, h_mm, cell_mm, out):
-    W, H = round(w_mm * PX), round(h_mm * PX)
+def ruled(cells, out):
+    g = GAP * PX
+    W, H = round(cells * 4 * g), round(8 * g)
     im = Image.new('RGB', (W, H), BG); d = ImageDraw.Draw(im)
-    n = max(1, round(w_mm / cell_mm))
-    for i in range(1, n):                       # vertical cell lines
-        x = round(i * W / n); d.line([(x, 0), (x, H)], fill=VERT, width=2)
-    for f, col, wd in ((0.25, THIN, 2), (0.75, THIN, 2), (0.5, BASE, 3)):   # guide lines, darker baseline
-        y = round(f * H); d.line([(0, y), (W, y)], fill=col, width=wd)
+    for i in range(1, cells):                                   # vertical cell lines
+        x = round(i * 4 * g); d.line([(x, 0), (x, H)], fill=VERT, width=2)
+    for k in (1, 2, 3, 5, 6, 7):                                # 3 thin lines above and below
+        y = round(k * g); d.line([(0, y), (W, y)], fill=THIN, width=2)
+    d.line([(0, round(4 * g)), (W, round(4 * g))], fill=MAIN, width=4)   # main line
     d.rectangle([0, 0, W - 1, H - 1], outline=EDGE, width=3)
     im.save(out)
+    return W, H
 
-for spec in sys.argv[1:]:                        # name:w:h:cell
-    name, w, h, c = spec.split(':'); ruled(float(w), float(h), float(c), f'img/{name}.png')
+for spec in sys.argv[1:]:                                       # name:cells
+    name, cells = spec.split(':')
+    W, H = ruled(int(cells), f'img/{name}.png')
+    print(name, f'{W}x{H}px', f'-> docx {round(W / PX * 3.7795)}x{round(H / PX * 3.7795)}')

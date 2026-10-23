@@ -6,7 +6,7 @@ from io import BytesIO
 
 src, out = sys.argv[1], sys.argv[2]
 W, H = 842, 595                      # A4 landscape (pt)
-x0, y0, bw, bh = 38, 54, 518, 762    # union content box of both pages (pt, PDF coords)
+x0, y0, bw, bh = 38, 42, 518, 774    # union content box of both pages (pt, PDF coords)
 M = 14                               # margin inside each half
 s = min((W / 2 - 2 * M) / bw, (H - 2 * M) / bh)
 
