@@ -10,6 +10,9 @@ const W = 10206; // content width (A4, margins 850)
 const R = (text, o = {}) => new TextRun({ text, font: FONT, rightToLeft: true, size: o.size || 32,
   bold: o.bold, color: o.color, underline: o.underline ? {} : undefined });
 const BL = (n = 16) => R('.'.repeat(n), { color: GREY, size: 32 });
+// copybook-ruled answer boxes (see ruling.py): small, medium, full-width
+const RBS = { s: { width: 76, height: 42 }, m: { width: 128, height: 42 }, l: { width: 624, height: 49 } };
+const RB = (k) => new ImageRun({ type: 'png', data: fs.readFileSync(`img/rule_${k}.png`), transformation: RBS[k] });
 const P = (children, o = {}) => new Paragraph({ children, bidirectional: true, alignment: o.align, indent: o.indent ? { start: o.indent } : undefined,
   spacing: { before: o.before ?? 60, after: o.after ?? 60, line: o.line ?? 360, lineRule: LineRuleType.AUTO }, keepNext: o.keepNext });
 const C = AlignmentType.CENTER;
@@ -63,9 +66,9 @@ const page1 = [
   ...exercise([
     heading('1', 'أُكْمِلُ بِالْمَقْطَعِ النَّاقِصِ وَأَقْرَأُ الْجُمْلَةَ قِرَاءَةً مُسْتَرْسِلَةً:'),
     syllableBank(['ـمَـ', 'مِيـ', 'مَا', 'ـمِ', 'ـمُـ']),
-    P([R('وَقَفَتِ الْـ', { size: 44 }), BL(), R('ـعَلِّمَةُ أَ', { size: 44 }), BL(), R('مَ الْقِسْـ', { size: 44 }), BL(),
-      R(' وَسَلَّـ', { size: 44 }), BL(), R('ـتْ', { size: 44 })], { before: 180, after: 20, line: 400 }),
-    P([R('عَلَى التَّلَا', { size: 44 }), BL(), R('ـذِ.', { size: 44 })], { before: 0, after: 20, line: 400 }),
+    P([R('وَقَفَتِ الْـ', { size: 44 }), RB('s'), R('ـعَلِّمَةُ أَ', { size: 44 }), RB('s'), R('مَ الْقِسْـ', { size: 44 }), RB('s'),
+      R(' وَسَلَّـ', { size: 44 }), RB('s'), R('ـتْ', { size: 44 })], { before: 160, after: 40, line: 300 }),
+    P([R('عَلَى التَّلَا', { size: 44 }), RB('s'), R('ـذِ.', { size: 44 })], { before: 40, after: 20, line: 300 }),
   ]),
 ];
 const dot = () => P([R('●', { color: NAVY, size: 24 })], { align: C, before: 0, after: 0 });
@@ -98,16 +101,16 @@ const page2 = [
     syllableBank(['ـرَا', 'رِيـ', 'ـرُو', 'رَ']),
     spacer(9),
     table([new TableRow({ children: [
-      word([BL(12), S38('ـمُ')], 2250), cell([P([])], 300),
-      word([S38('حُـ'), BL(12), S38('فًا')], 2250), cell([P([])], 300),
-      word([S38('السَّبُّو'), BL(12), S38('ةِ')], 2250), cell([P([])], 300),
-      word([S38('فَـ'), BL(12), S38('شَةً')], 2250),
+      word([RB('s'), S38('ـمُ')], 2250), cell([P([])], 300),
+      word([S38('حُـ'), RB('s'), S38('فًا')], 2250), cell([P([])], 300),
+      word([S38('السَّبُّو'), RB('s'), S38('ةِ')], 2250), cell([P([])], 300),
+      word([S38('فَـ'), RB('s'), S38('شَةً')], 2250),
     ] })], [2250, 300, 2250, 300, 2250, 300, 2250]),
   ]),
   ...exercise([
     heading('2', 'أُكْمِلُ النَّصَّ بِالْكَلِمَاتِ الْمُتَحَصَّلِ عَلَيْهَا وَأَقْرَؤُهُ قِرَاءَةً مُسْتَرْسِلَةً:'),
-    P([S38('رَسَمَتْ '), BL(26), S38(' '), BL(26), S38(' عَلَى '), BL(26)], { before: 0, after: 0, line: 320 }),
-    P([S38('وَكَتَبَ مَالِكٌ '), BL(26), S38(' عَلَى كُرَّاسِهِ.')], { before: 20, line: 320, after: 0 }),
+    P([S38('رَسَمَتْ '), RB('m'), S38(' '), RB('m'), S38(' عَلَى '), RB('m')], { before: 0, after: 0, line: 320 }),
+    P([S38('وَكَتَبَ مَالِكٌ '), RB('m'), S38(' عَلَى كُرَّاسِهِ.')], { before: 20, line: 320, after: 0 }),
   ]),
 ];
 const card = (pic, dims, parts, w) => cell([
@@ -117,16 +120,15 @@ const card = (pic, dims, parts, w) => cell([
 page2.push(...exercise([
   heading('3', 'أَسْتَمِعُ وَأُكْمِلُ الْكَلِمَاتِ بِالْمَقْطَعِ الْمُنَاسِبِ لِحَرْفِ الرَّاءِ:'),
   table([new TableRow({ cantSplit: true, children: [
-    card('ruler', [105, 70], [S38('مِسْطَـ'), BL(12), S38('ةٌ')], 2250), cell([P([])], 300),
-    card(null, null, [S38('اِشْتَـ'), BL(12)], 2250), cell([P([])], 300),
-    card('boy', [54, 70], [S38('كَـ'), BL(12), S38('ـمُ')], 2250), cell([P([])], 300),
-    card('sharpener', [105, 70], [S38('مِبْـ'), BL(12), S38('ةٌ')], 2250),
+    card('ruler', [105, 70], [S38('مِسْطَـ'), RB('s'), S38('ةٌ')], 2250), cell([P([])], 300),
+    card(null, null, [S38('اِشْتَـ'), RB('s')], 2250), cell([P([])], 300),
+    card('boy', [54, 70], [S38('كَـ'), RB('s'), S38('ـمُ')], 2250), cell([P([])], 300),
+    card('sharpener', [105, 70], [S38('مِبْـ'), RB('s'), S38('ةٌ')], 2250),
   ] })], [2250, 300, 2250, 300, 2250, 300, 2250]),
 ]));
 page2.push(...exercise([
   heading('4', 'أُرَتِّبُ الْكَلِمَاتِ السَّابِقَةَ لِلْحُصُولِ عَلَى جُمْلَةٍ مُفِيدَةٍ ثُمَّ أَقْرَؤُهَا:'),
-  P([BL(100)], { align: C, before: 40, line: 300 }),
-  P([BL(100)], { align: C, before: 60, after: 0, line: 300 }),
+  P([RB('l')], { align: C, before: 60, after: 20, line: 240 }),
 ]));
 
 // ======================= PAGE 3 : answer key =======================
