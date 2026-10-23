@@ -39,10 +39,6 @@ function title(text) {
   return table([new TableRow({ children: [cell([P([R(text, { bold: true, size: 46, color: NAVY })], { align: C, before: 30, after: 30, line: 320 })],
     6800, { borders: BOX(NAVY, 18), fill: 'DEEAF6' })] })], [6800]);
 }
-function nameLine() {
-  return P([R('الِاسْمُ: ', { bold: true, size: 26 }), BL(34), R('    الْقِسْمُ: ', { bold: true, size: 26 }), BL(18),
-    R('    التَّارِيخُ: ', { bold: true, size: 26 }), BL(18)], { align: C, before: 80, after: 60 });
-}
 function heading(num, text) {
   return P([R(`${num} – `, { bold: true, color: ACCENT, size: 34 }), R(text, { bold: true, color: NAVY, size: 34, underline: true })],
     { before: 0, after: 90, line: 320, keepNext: true });
@@ -63,7 +59,7 @@ function syllableBank(items) {
 
 // ======================= PAGE 1 : حرف الميم =======================
 const page1 = [
-  title('حَرْفُ الْمِيمِ: مَرْحَلَةُ التَّرْكِيبِ'), nameLine(),
+  title('حَرْفُ الْمِيمِ: مَرْحَلَةُ التَّرْكِيبِ'), spacer(14),
   ...exercise([
     heading('1', 'أُكْمِلُ بِالْمَقْطَعِ النَّاقِصِ وَأَقْرَأُ الْجُمْلَةَ قِرَاءَةً مُسْتَرْسِلَةً:'),
     syllableBank(['ـمَـ', 'مِيـ', 'مَا', 'ـمِ', 'ـمُـ']),
@@ -96,7 +92,7 @@ page1.push(...exercise([
 const word = (parts, w) => cell([P(parts, { align: C, before: 20, after: 20, line: 320 })], w, { borders: BOX('595959', 10), fill: 'F2F2F2' });
 const S38 = (t) => R(t, { size: 42 });
 const page2 = [
-  title('حَرْفُ الرَّاءِ: مَرْحَلَةُ التَّرْكِيبِ'), nameLine(),
+  title('حَرْفُ الرَّاءِ: مَرْحَلَةُ التَّرْكِيبِ'), spacer(14),
   ...exercise([
     heading('1', 'أَقْرَأُ الْمَقَاطِعَ وَأُكْمِلُ الْكَلِمَاتِ بِمَا يُنَاسِبُ:'),
     syllableBank(['ـرَا', 'رِيـ', 'ـرُو', 'رَ']),
